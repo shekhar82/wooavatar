@@ -1,0 +1,8 @@
+
+.project
+
+*.prefs
+
+auth-ws/.classpath
+
+avatar-ws/.classpath
