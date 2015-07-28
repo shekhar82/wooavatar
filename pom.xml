@@ -33,6 +33,7 @@
 	<modules>
 		<module>auth-ws</module>
 		<module>avatar-ws</module>
-    </modules>
+    <module>dal-apis</module>
+  </modules>
 
 </project>

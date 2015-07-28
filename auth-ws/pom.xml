@@ -7,7 +7,7 @@
     <artifactId>wooavatar</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.wootag.authws</groupId>
+  <groupId>com.wootag</groupId>
   <artifactId>auth-ws</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
