@@ -4,11 +4,13 @@
 package com.wootag.avatar.ws.services.impl;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +47,11 @@ public class AvatarRESTServicesImpl implements IAvatarRESTServices {
 			if (user == null)
 				return Response.status(Status.NOT_FOUND)
 						.entity("User profile dose not exist").build();
-			else
+			else {
+				
 				return Response.ok(user).build();
+			}
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError()
@@ -134,6 +139,23 @@ public class AvatarRESTServicesImpl implements IAvatarRESTServices {
 			return Response.serverError()
 					.entity("Please check catalina.out for error").build();
 		}
+	}
+
+	@Override
+	public Response getUserProfilePic(String userId) {
+		InputStream imageStream = userDao.getUserProfilePicture(userId);
+		
+		if (imageStream == null)
+			return Response.status(Status.NOT_FOUND).entity("No Image available").build();
+		try {
+			byte[] imageBytes = IOUtils.toByteArray(imageStream);
+			return Response.ok(imageBytes).build();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return Response.serverError()
+					.entity("Please check catalina.out for error").build();
+		}
+		
 	}
 
 }

@@ -57,5 +57,10 @@ public interface IAvatarRESTServices {
 			@Multipart("file") MultipartBody p_attachment);
 	
 	
+	@GET
+	@Produces({"image/png"})
+	@Consumes({ MediaType.APPLICATION_JSON })
+	@Path("/getimage/{userId}")
+	public Response getUserProfilePic(@PathParam("userId") String userId);
 	
 }
