@@ -5,13 +5,17 @@ package com.wootag.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-
 import java.sql.Blob;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * @author gupsh09
  *
  */
+@XmlRootElement
 public class User implements Serializable {
 
 	/**
@@ -61,6 +65,8 @@ public class User implements Serializable {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+	
+	@JsonIgnore
 	public Blob getProfileImage() {
 		return profileImage;
 	}

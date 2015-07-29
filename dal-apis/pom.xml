@@ -45,6 +45,12 @@
 		<artifactId>mysql-connector-java</artifactId>
 		<version>5.1.34</version>
 	</dependency>
+	<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>${jakson-jaxrs.version}</version>
+		</dependency>
+		
   </dependencies>
   
   <build>

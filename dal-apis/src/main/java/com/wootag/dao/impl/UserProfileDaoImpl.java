@@ -3,7 +3,6 @@
  */
 package com.wootag.dao.impl;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
@@ -69,7 +68,7 @@ public class UserProfileDaoImpl implements IUserProfileDao {
 	/* (non-Javadoc)
 	 * @see com.wootag.dao.IUserProfileDao#updateProfilePicture(java.lang.String, com.mysql.jdbc.Blob)
 	 */
-	public void updateProfilePicture(String userId, FileInputStream fis) {
+	public void updateProfilePicture(String userId, InputStream fis) {
 		
 		this.jdbcTemplate.execute(UPDATE_PROFILE_PIC, new PreparedStatementCallback<Boolean>() {
 
@@ -89,22 +88,28 @@ public class UserProfileDaoImpl implements IUserProfileDao {
 	 */
 	public User getUserProfile(String userId) {
 		Object[] args = new Object[]{userId};
-		User user = this.jdbcTemplate.queryForObject(GET_PROFILE, args, new RowMapper<User>() {
+		try {
+			User user = this.jdbcTemplate.queryForObject(GET_PROFILE, args, new RowMapper<User>() {
 
-			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-				User user = new User();
-				user.setUserId(rs.getString("user_id"));
-				user.setPrimaryEmail(rs.getString("primary_email"));
-				user.setFirstName(rs.getString("first_name"));
-				user.setLastName(rs.getString("last_name"));
-				user.setLastUpdated(rs.getTimestamp("last_updated"));
-				user.setActive(rs.getBoolean("is_active"));
-				return user;
-			}
+				public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+					User user = new User();
+					user.setUserId(rs.getString("user_id"));
+					user.setPrimaryEmail(rs.getString("primary_email"));
+					user.setFirstName(rs.getString("first_name"));
+					user.setLastName(rs.getString("last_name"));
+					user.setLastUpdated(rs.getTimestamp("last_updated"));
+					user.setActive(rs.getBoolean("is_active"));
+					return user;
+				}
+				
+			});
 			
-		});
+			return user;
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
 		
-		return user;
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -113,15 +118,22 @@ public class UserProfileDaoImpl implements IUserProfileDao {
 	public InputStream getUserProfilePicture(String userId) {
 		Object[] args = new Object[]{userId};
 		
-		InputStream imageStream = this.jdbcTemplate.queryForObject(GET_PROFILE_PIC, args, new RowMapper<InputStream>(){
+		try {
+			InputStream imageStream = this.jdbcTemplate.queryForObject(GET_PROFILE_PIC, args, new RowMapper<InputStream>(){
 
-			@Override
-			public InputStream mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getBinaryStream(1);
-			}
-			
-		});
-		return imageStream;
+				@Override
+				public InputStream mapRow(ResultSet rs, int rowNum) throws SQLException {
+					return rs.getBinaryStream(1);
+				}
+				
+			});
+			return imageStream;
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

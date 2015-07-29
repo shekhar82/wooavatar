@@ -33,7 +33,7 @@ public class UserProfileDaoImplTest {
 	public void setUp() throws Exception {
 	}
 
-	@Test
+	@Ignore
 	public void testInsertUserProfile() {
 		User user =  new User();
 		user.setUserId("brain.bit");
@@ -48,7 +48,7 @@ public class UserProfileDaoImplTest {
 		
 	}
 	
-	@Test
+	@Ignore
 	public void testUpdateUserProfile()
 	{
 		User user =  new User();
@@ -61,7 +61,7 @@ public class UserProfileDaoImplTest {
 	}
 
 	
-	@Test
+	@Ignore
 	public void testGetUserProfile()
 	{
 		User user = userDao.getUserProfile("brain.bit");
@@ -85,7 +85,7 @@ public class UserProfileDaoImplTest {
 	}
 	
 	
-	@Test
+	@Ignore
 	public void testGetProfilePic() throws IOException
 	{
 		File image = new File("/Users/gupsh09/Pictures/profile_pic.jpg");

@@ -3,7 +3,6 @@
  */
 package com.wootag.dao;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Blob;
 
@@ -20,7 +19,7 @@ public interface IUserProfileDao {
 
 	public void updateProfile(User user);
 
-	public void updateProfilePicture(String userId, FileInputStream fis);
+	public void updateProfilePicture(String userId, InputStream fis);
 
 	public User getUserProfile(String userId);
 
