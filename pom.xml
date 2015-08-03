@@ -17,6 +17,7 @@
 		<junit.version>4.12</junit.version>
 		<servlet.version>3.1.0</servlet.version>
 		<jakson-jaxrs.version>1.9.13</jakson-jaxrs.version>
+		<version.oltu>1.0.0</version.oltu>
 	</properties>
 	<dependencies>
 		<dependency>
