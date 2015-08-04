@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wootag.dao.IRegisterClientDao;
 import com.wootag.entities.Client;
@@ -18,6 +19,7 @@ import com.wootag.entities.Client;
  * @author gupsh09
  *
  */
+
 
 @Repository
 public class RegisterClientDaoImpl implements IRegisterClientDao {
@@ -41,8 +43,9 @@ public class RegisterClientDaoImpl implements IRegisterClientDao {
 	 * com.wootag.dao.IRegisterClientDao#registerClient(com.wootag.entities.
 	 * Client)
 	 */
+	@Transactional(readOnly=false)
 	@Override
-	public boolean registerClient(Client client) 
+	public Client registerClient(Client client) 
 	{
 		Object[] args = new Object[] { client.getClientId(),
 				client.getClientSecret(), client.getClientName(),
@@ -50,13 +53,16 @@ public class RegisterClientDaoImpl implements IRegisterClientDao {
 		try {
 			int returnedVal = this.jdbcTemplate.update(REGISTER_CLIENT, args);
 			
-			if (returnedVal == 1)
-				return true;
+			int retunedValue = this.jdbcTemplate.update("INSERT INTO client_oauth_attr(client_id) values (?)", new Object[] {client.getClientId()});
+			
+			
+			if (returnedVal == 1 && retunedValue == 1)
+				return client;
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
 		
-		return false;
+		return null;
 	}
 
 	@Override

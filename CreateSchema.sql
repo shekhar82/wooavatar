@@ -24,6 +24,7 @@ create table user_auth (
 	user_id varchar(100) not null,
 	user_pwd varchar(50) not null,
 	primary_email varchar(100) not null,
+	access_token varchar(255),
 	PRIMARY KEY(user_id),
 	UNIQUE (primary_email)
 );

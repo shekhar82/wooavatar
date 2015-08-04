@@ -5,6 +5,7 @@ package com.wootag.avatar.ws.services;
 
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -62,5 +63,7 @@ public interface IAvatarRESTServices {
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Path("/getimage/{userId}")
 	public Response getUserProfilePic(@PathParam("userId") String userId);
+	
+	
 	
 }

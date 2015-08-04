@@ -11,6 +11,6 @@ import com.wootag.entities.Client;
  */
 public interface IRegisterClientDao {
 
-	public boolean registerClient(Client client);
+	public Client registerClient(Client client);
 	public boolean isClientValid (String clientId, String clientSecret);
 }

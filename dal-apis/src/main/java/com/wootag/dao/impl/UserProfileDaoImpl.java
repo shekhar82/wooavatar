@@ -4,7 +4,6 @@
 package com.wootag.dao.impl;
 
 import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wootag.dao.IUserProfileDao;
 import com.wootag.entities.User;
@@ -51,6 +51,7 @@ public class UserProfileDaoImpl implements IUserProfileDao {
 	/* (non-Javadoc)
 	 * @see com.wootag.dao.IUserProfileDao#createProfile(com.wootag.entities.User)
 	 */
+	@Transactional(readOnly=false)
 	public void createProfile(User user) {
 		Object[] args = new Object[] {user.getUserId(),user.getPrimaryEmail(),user.getFirstName(),user.getLastName(),user.isActive()};
 		int returnedVal =  this.jdbcTemplate.update(INSERT_PROFILE, args);
@@ -59,6 +60,7 @@ public class UserProfileDaoImpl implements IUserProfileDao {
 	/* (non-Javadoc)
 	 * @see com.wootag.dao.IUserProfileDao#updateProfile(com.wootag.entities.User)
 	 */
+	@Transactional(readOnly=false)
 	public void updateProfile(User user) {
 		Object[] args = new Object[] {user.getFirstName(),user.getLastName(),user.isActive(),user.getUserId()};
 		int returnedVal =  this.jdbcTemplate.update(UPDATE_PROFILE, args);
@@ -68,6 +70,7 @@ public class UserProfileDaoImpl implements IUserProfileDao {
 	/* (non-Javadoc)
 	 * @see com.wootag.dao.IUserProfileDao#updateProfilePicture(java.lang.String, com.mysql.jdbc.Blob)
 	 */
+	@Transactional(readOnly=false)
 	public void updateProfilePicture(String userId, InputStream fis) {
 		
 		this.jdbcTemplate.execute(UPDATE_PROFILE_PIC, new PreparedStatementCallback<Boolean>() {

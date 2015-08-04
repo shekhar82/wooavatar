@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.wootag.avatar.ws.services.IAvatarRESTServices;
+import com.wootag.dao.IUserAuthDao;
 import com.wootag.dao.IUserProfileDao;
 import com.wootag.entities.User;
 
@@ -31,6 +33,8 @@ public class AvatarRESTServicesImpl implements IAvatarRESTServices {
 
 	@Autowired
 	private IUserProfileDao userDao;
+	
+	
 
 	/*
 	 * (non-Javadoc)
@@ -157,5 +161,7 @@ public class AvatarRESTServicesImpl implements IAvatarRESTServices {
 		}
 		
 	}
+
+	
 
 }
