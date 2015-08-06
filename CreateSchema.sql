@@ -33,8 +33,8 @@ create table client_oauth_attr (
 	client_id varchar(255) not null,
 	auth_code varchar(255),
 	access_token varchar(255),
-	auth_code_issued TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	access_token_issued TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	auth_code_issued TIMESTAMP,
+	access_token_issued TIMESTAMP,
 	access_token_expiry int,
 	PRIMARY KEY(client_id)
 );
