@@ -24,6 +24,7 @@
 		<jaxrs:providers>
 			<ref bean="jsonProvider" />
 			<ref bean="searchContextProvider" />
+			<ref bean="authorizationInterceptors"/>
 		</jaxrs:providers>
 		<jaxrs:extensionMappings>
 			<entry key="json" value="application/json" />
@@ -31,6 +32,7 @@
 		</jaxrs:extensionMappings>
 	</jaxrs:server>
 
+	<bean id="authorizationInterceptors" class="com.wootag.avatar.ws.interceptors.AuthorizationInterceptor" />
 	<!-- JSON mapper -->
 	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider">
 		<constructor-arg ref="objectMapper"></constructor-arg>

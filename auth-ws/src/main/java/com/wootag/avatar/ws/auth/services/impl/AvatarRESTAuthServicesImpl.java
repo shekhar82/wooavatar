@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuer;
@@ -143,14 +144,15 @@ public class AvatarRESTAuthServicesImpl implements IAvatarRESTAuthServices {
 	@Override
 	public Response getSecurityToken(HttpServletRequest request) {
 		try {
-			WootagOAuthTokenRequest oauthRequest = new WootagOAuthTokenRequest(request);
+			WootagOAuthTokenRequest oauthRequest = new WootagOAuthTokenRequest(
+					request);
 			OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(
 					new MD5Generator());
-			
+
 			String accessToken = null;
+			StringBuilder bearerToken = new StringBuilder();
 			if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(
-					GrantType.AUTHORIZATION_CODE.toString())) 
-			{
+					GrantType.AUTHORIZATION_CODE.toString())) {
 				String clientId = oauthRequest.getClientId();
 				String authCode = oauthRequest.getParam(OAuth.OAUTH_CODE);
 
@@ -162,27 +164,33 @@ public class AvatarRESTAuthServicesImpl implements IAvatarRESTAuthServices {
 							.entity("Auth token is wrong").build();
 				accessToken = oauthIssuerImpl.accessToken();
 				clientOAuthDao.updateClientAccessToken(clientId, accessToken);
+				bearerToken.append(GrantType.AUTHORIZATION_CODE.name())
+						.append(":").append(clientId).append(":")
+						.append(accessToken);
 			} else if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(
-					GrantType.PASSWORD.toString())) 
-			{
+					GrantType.PASSWORD.toString())) {
 				String userId = oauthRequest.getUsername();
 				String userPwd = oauthRequest.getPassword();
-				
-				boolean isUserAuthenticated = userAuthDao.validateUser(userId, userPwd);
-				
+
+				boolean isUserAuthenticated = userAuthDao.validateUser(userId,
+						userPwd);
+
 				if (!isUserAuthenticated)
 					return Response.status(Status.UNAUTHORIZED)
 							.entity("User is not authenticated").build();
-				
+
 				accessToken = oauthIssuerImpl.accessToken();
 				userAuthDao.updateAccessToken(userId, accessToken);
+				bearerToken.append(GrantType.PASSWORD.name()).append(":")
+						.append(userId).append(":").append(accessToken);
 			}
-			 
 
-			
+			String base64EncodedBearerToken = Base64
+					.encodeBase64String(bearerToken.toString().getBytes());
+
 			OAuthResponse response = OAuthASResponse
 					.tokenResponse(HttpServletResponse.SC_OK)
-					.setAccessToken(accessToken).setExpiresIn("3600")
+					.setAccessToken(base64EncodedBearerToken).setExpiresIn("3600")
 					.buildJSONMessage();
 			return Response.status(response.getResponseStatus())
 					.entity(response.getBody()).build();

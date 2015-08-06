@@ -15,4 +15,6 @@ public interface IUserAuthDao {
 	
 	public void updateAccessToken(String userId, String accessToken);
 	
+	public boolean validateAccessToken(String userId, String accessToken);
+	
 }

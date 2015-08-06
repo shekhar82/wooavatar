@@ -30,6 +30,8 @@ public class UserAuthDaoImpl implements IUserAuthDao {
 	private static final String GET_USER = "SELECT user_pwd FROM user_auth WHERE user_id=?";
 	
 	private static final String UPDATE_ACCESS_TOKEN = "UPDATE user_auth set access_token=? WHERE user_id=?";
+	
+	private static final String GET_USER_ACCESS_TOKEN = "SELECT access_token FROM user_auth where user_id=?";
 	@Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -72,6 +74,20 @@ public class UserAuthDaoImpl implements IUserAuthDao {
 		Object[] args = new Object[]{accessToken, userId};
 		
 		this.jdbcTemplate.update(UPDATE_ACCESS_TOKEN,args);
+		
+	}
+	@Override
+	public boolean validateAccessToken(String userId, String accessToken) {
+		try {
+			String accessTokenReturned = this.jdbcTemplate.queryForObject(GET_USER_ACCESS_TOKEN, new Object[] {userId}, String.class);
+			
+			if (StringUtils.equals(accessToken, accessTokenReturned))
+				return true;
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
 		
 	}
 
